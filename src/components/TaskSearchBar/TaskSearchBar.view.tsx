@@ -5,27 +5,14 @@ import type { Task } from "../Tasks/Tasks.view";
 
 type Props = {
   setTasks: (f: (prevState: Task[]) => Task[]) => void;
+  addTask: (task: string) => void;
 };
-const TaskSearchBar = ({ setTasks }: Props) => {
+const TaskSearchBar = ({ setTasks, addTask }: Props) => {
   const [inputValue, setInputValue] = useState("");
 
   const addNewTask = () => {
     if (inputValue) {
-      //Add the new task then reset the value
-      const id = new Date().getTime();
-
-      setTasks((prevState: Task[]) => {
-        const newData: Task[] = [
-          ...prevState,
-          {
-            id,
-            value: inputValue,
-            done: false,
-          },
-        ];
-
-        return newData;
-      });
+      addTask(inputValue);
       setInputValue("");
     }
   };

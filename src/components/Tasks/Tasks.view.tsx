@@ -15,9 +15,24 @@ const Tasks = () => {
     saveToDB("tasks", tasks);
   }, [tasks]);
 
+  const addTask = (task: string) => {
+    setTasks((prevState: Task[]) => {
+      const newData: Task[] = [
+        ...prevState,
+        {
+          id: new Date().getTime(),
+          value: task,
+          done: false,
+        },
+      ];
+
+      return newData;
+    });
+  };
+
   return (
     <Fragment>
-      <TaskSearchBar setTasks={setTasks} />
+      <TaskSearchBar setTasks={setTasks} addTask={addTask} />
       <TaskList tasks={tasks} setTasks={setTasks} />
     </Fragment>
   );
