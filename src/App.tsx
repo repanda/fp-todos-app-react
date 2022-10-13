@@ -5,6 +5,7 @@ import { fetchData, saveToDB } from "./helpers";
 
 import "./App.scss";
 import Tasks from "./components/Tasks/Tasks.view";
+import { pipe } from "fp-ts/lib/function";
 
 
 type Config = {
@@ -14,16 +15,25 @@ type Config = {
 
 function App() {
 
-  const [config, setConfig] = useState<Config>(fetchData("config") || {
+  const [config, setConfig] = useState<Config>({
     darkModeFlag: false,
     hideCompletedTasksFlag: false
   }
   );
 
-  React.useEffect(() => {
-    saveToDB("config", config);
-  }, [config]);
+  const [loading, setLoading] = useState(true);
 
+  React.useEffect(() => {
+    loading || saveToDB("config", config);
+  }, [loading, config]);
+
+  React.useEffect(() => {
+    pipe(
+      fetchData<Config>("config"),
+      setConfig,
+      () => setLoading(false)
+    )
+  }, []);
 
   const toogleDarkMode = () => setConfig({ ...config, darkModeFlag: !config.darkModeFlag });
   const toogleCompletedTasks = () => setConfig({ ...config, hideCompletedTasksFlag: !config.hideCompletedTasksFlag });

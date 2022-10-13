@@ -2,6 +2,7 @@ import React, { Fragment, useState } from "react";
 import TaskSearchBar from "../TaskSearchBar/TaskSearchBar.view";
 import TaskList from "../TaskList/TaskList.view";
 import { fetchData, saveToDB } from "../../helpers";
+import { pipe } from "fp-ts/lib/function";
 
 export type Task = {
   id: number;
@@ -15,10 +16,20 @@ type Props = {
 }
 
 const Tasks = ({ toogleCompletedTasks, hideCompletedTasksFlag }: Props) => {
-  const [tasks, setTasks] = useState<Task[]>(fetchData("tasks") || []);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState(true);
+  
   React.useEffect(() => {
-    saveToDB("tasks", tasks);
-  }, [tasks]);
+    loading || saveToDB("tasks", tasks);
+  }, [loading, tasks]);
+
+  React.useEffect(() => {
+    pipe(
+      fetchData<Task[]>("tasks"),
+      setTasks,
+      () => setLoading(false)
+    )
+  }, []);
 
   const addTask = (task: string) => setTasks((prevState: Task[]) => [
     ...prevState,
