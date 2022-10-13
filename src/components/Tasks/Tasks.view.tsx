@@ -48,7 +48,6 @@ const Tasks = () => {
       <TaskSearchBar addTask={addTask} />
       <TaskList
         tasks={tasks}
-        setTasks={setTasks}
         updateTask={updateTask}
         removeTask={removeTask}
         toggleTask={toggleTask}

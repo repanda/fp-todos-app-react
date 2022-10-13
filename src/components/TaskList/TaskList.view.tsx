@@ -8,7 +8,6 @@ import "./TaskList.style.scss";
 
 type Props = {
   tasks: Task[];
-  setTasks: (task: Task[]) => void;
   updateTask: (value: string, taskID: number) => void;
   removeTask: (taskID: number) => void;
   toggleTask: (taskID: number) => void;
