@@ -9,7 +9,11 @@ export type Task = {
   done: boolean;
 };
 
-const Tasks = () => {
+type Props = {
+  toogleCompletedTasks: () => void;
+}
+
+const Tasks = ({ toogleCompletedTasks }: Props) => {
   const [tasks, setTasks] = useState<Task[]>(fetchData("tasks") || []);
   React.useEffect(() => {
     saveToDB("tasks", tasks);
@@ -51,6 +55,7 @@ const Tasks = () => {
         updateTask={updateTask}
         removeTask={removeTask}
         toggleTask={toggleTask}
+        toogleCompletedTasks={toogleCompletedTasks}
       />
     </Fragment>
   );

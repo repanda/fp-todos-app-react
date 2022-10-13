@@ -1,23 +1,34 @@
 import React, { useState } from "react";
 import Header from "./components/Header/Header.view";
 import Footer from "./components/Footer/Footer.view";
-import { fetchData } from "./helpers";
+import { fetchData, saveToDB } from "./helpers";
 
 import "./App.scss";
 import Tasks from "./components/Tasks/Tasks.view";
 
 function App() {
-  const [darkModeFlag, setDarkModeFlag] = useState<boolean>(
-    fetchData("darkModeFlag")
+
+  const [config, setConfig] = useState(fetchData<any>("config") || {
+    darkModeFlag: false,
+    hideCompletedTasksFlag: false
+  }
   );
 
-  const getAppClasses = `App ${darkModeFlag ? "App--isDark" : ""}`;
+  React.useEffect(() => {
+    saveToDB("config", config);
+  }, [config]);
+
+
+  const toogleDarkMode = () => setConfig({ ...config, darkModeFlag: !config.darkModeFlag });
+  const toogleCompletedTasks = () => setConfig({ ...config, hideCompletedTasksFlag: !config.hideCompletedTasksFlag });
+
+  const getAppClasses = `App ${config.darkModeFlag ? "App--isDark" : ""}`;
 
   return (
     <main className={getAppClasses}>
-      <Header darkModeFlag={darkModeFlag} setDarkModeFlag={setDarkModeFlag} />
+      <Header darkModeFlag={config.darkModeFlag} toogleDarkMode={toogleDarkMode} />
       <div className="App__wrapper">
-        <Tasks />
+        <Tasks toogleCompletedTasks={toogleCompletedTasks}/>
         <Footer />
       </div>
     </main>

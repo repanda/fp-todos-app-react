@@ -13,8 +13,9 @@ type Props = {
   updateTask: (value: string, taskID: number) => void;
   removeTask: (taskID: number) => void;
   toggleTask: (taskID: number) => void;
+  toogleCompletedTasks: () => void;
 };
-const TaskList = ({ tasks, updateTask, removeTask, toggleTask }: Props) => {
+const TaskList = ({ tasks, updateTask, removeTask, toggleTask, toogleCompletedTasks }: Props) => {
   const [editModeID, setEditModeID] = useState<O.Option<number>>(O.none);
 
   const [hideCompletedTasksFlag, setHideCompletedTasksFlag] = useState<boolean>(
@@ -42,13 +43,6 @@ const TaskList = ({ tasks, updateTask, removeTask, toggleTask }: Props) => {
     }
   };
 
-  const toggleCompletedTasksFlag = () => {
-    const result = !hideCompletedTasksFlag;
-
-    setHideCompletedTasksFlag(result);
-    saveToDB("hideCompletedTasksFlag", result);
-  };
-
   const generateTaskClasses = (done: boolean) =>
     `TaskList__taskContent ${done ? "TaskList__taskContent--isActive" : ""}`;
 
@@ -66,7 +60,7 @@ const TaskList = ({ tasks, updateTask, removeTask, toggleTask }: Props) => {
   return (
     <div className="TaskList">
       {!!tasks.length && (
-        <p className={generateLinkClasses} onClick={toggleCompletedTasksFlag}>
+        <p className={generateLinkClasses} onClick={toogleCompletedTasks}>
           {hideCompletedTasksFlag ? (
             <span>إظهار المهام المكتملة</span>
           ) : (
