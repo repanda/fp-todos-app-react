@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 
 import "./TaskSearchBar.style.scss";
-import type { Task } from "../Tasks/Tasks.view";
 
 type Props = {
-  setTasks: (f: (prevState: Task[]) => Task[]) => void;
   addTask: (task: string) => void;
 };
-const TaskSearchBar = ({ setTasks, addTask }: Props) => {
+const TaskSearchBar = ({ addTask }: Props) => {
   const [inputValue, setInputValue] = useState("");
 
   const addNewTask = () => {
