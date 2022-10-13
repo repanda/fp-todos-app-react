@@ -30,13 +30,28 @@ const Tasks = () => {
     )
   );
 
+
+  const removeTask = (taskID: number) => setTasks(
+    tasks.filter((task) => {
+      return task.id !== taskID;
+    })
+  );
+
+  const toggleTask = (taskID: number) => setTasks(
+    tasks.map((task) =>
+      task.id === taskID ? { ...task, done: !task.done } : task
+    )
+  );
+
   return (
     <Fragment>
       <TaskSearchBar addTask={addTask} />
-      <TaskList 
-        tasks={tasks} 
+      <TaskList
+        tasks={tasks}
         setTasks={setTasks}
         updateTask={updateTask}
+        removeTask={removeTask}
+        toggleTask={toggleTask}
       />
     </Fragment>
   );

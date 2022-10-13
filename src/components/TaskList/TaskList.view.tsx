@@ -10,8 +10,10 @@ type Props = {
   tasks: Task[];
   setTasks: (task: Task[]) => void;
   updateTask: (value: string, taskID: number) => void;
+  removeTask: (taskID: number) => void;
+  toggleTask: (taskID: number) => void;
 };
-const TaskList = ({ tasks, setTasks, updateTask }: Props) => {
+const TaskList = ({ tasks, updateTask, removeTask, toggleTask }: Props) => {
   const [editModeID, setEditModeID] = useState<null | number>(null);
 
   const [hideCompletedTasksFlag, setHideCompletedTasksFlag] = useState<boolean>(
@@ -28,12 +30,7 @@ const TaskList = ({ tasks, setTasks, updateTask }: Props) => {
         return false;
       }
     }
-
-    setTasks(
-      tasks.filter((task) => {
-        return task.id !== taskID;
-      })
-    );
+    removeTask(taskID);
   };
 
   const onKeyDown = (taskValue: string, taskID: number) => {
@@ -42,14 +39,6 @@ const TaskList = ({ tasks, setTasks, updateTask }: Props) => {
     if (!taskValue.trim()) {
       onRemoveTask(taskID, hideCompletedTasksFlag);
     }
-  };
-
-  const onCheckTask = (taskID: number) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === taskID ? { ...task, done: !task.done } : task
-      )
-    );
   };
 
   const toggleCompletedTasksFlag = () => {
@@ -62,9 +51,8 @@ const TaskList = ({ tasks, setTasks, updateTask }: Props) => {
   const generateTaskClasses = (done: boolean) =>
     `TaskList__taskContent ${done ? "TaskList__taskContent--isActive" : ""}`;
 
-  const generateLinkClasses = `TaskList__link ${
-    hideCompletedTasksFlag ? "TaskList__link--isActive" : ""
-  }`;
+  const generateLinkClasses = `TaskList__link ${hideCompletedTasksFlag ? "TaskList__link--isActive" : ""
+    }`;
 
   const exitEditMode = (taskID: number, taskValue: string) => {
     setEditModeID(null);
@@ -95,7 +83,7 @@ const TaskList = ({ tasks, setTasks, updateTask }: Props) => {
                 {task.done}
                 <div
                   className="TaskList__checkbox"
-                  onClick={() => onCheckTask(task.id)}
+                  onClick={() => toggleTask(task.id)}
                 >
                   <img
                     className="TaskList__checkboxImg"
