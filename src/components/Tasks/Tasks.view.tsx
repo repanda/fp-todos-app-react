@@ -24,10 +24,20 @@ const Tasks = () => {
     },
   ])
 
+  const updateTask = (value: string, taskID: number) => setTasks(
+    tasks.map((task) =>
+      task.id === taskID ? { ...task, value: value } : task
+    )
+  );
+
   return (
     <Fragment>
       <TaskSearchBar addTask={addTask} />
-      <TaskList tasks={tasks} setTasks={setTasks} />
+      <TaskList 
+        tasks={tasks} 
+        setTasks={setTasks}
+        updateTask={updateTask}
+      />
     </Fragment>
   );
 };

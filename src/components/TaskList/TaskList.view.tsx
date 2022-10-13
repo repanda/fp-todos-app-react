@@ -9,21 +9,14 @@ import "./TaskList.style.scss";
 type Props = {
   tasks: Task[];
   setTasks: (task: Task[]) => void;
+  updateTask: (value: string, taskID: number) => void;
 };
-const TaskList = ({ tasks, setTasks }: Props) => {
+const TaskList = ({ tasks, setTasks, updateTask }: Props) => {
   const [editModeID, setEditModeID] = useState<null | number>(null);
 
   const [hideCompletedTasksFlag, setHideCompletedTasksFlag] = useState<boolean>(
     fetchData("hideCompletedTasksFlag") || false
   );
-
-  const onUpdateTask = (taskValue: string, taskID: number) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === taskID ? { ...task, value: taskValue } : task
-      )
-    );
-  };
 
   const onRemoveTask = (taskID: number, shouldConfirm: boolean = true) => {
     if (shouldConfirm) {
@@ -117,7 +110,7 @@ const TaskList = ({ tasks, setTasks }: Props) => {
                       type="text"
                       value={task.value}
                       onChange={(event) =>
-                        onUpdateTask(event.target.value, task.id)
+                        updateTask(event.target.value, task.id)
                       }
                       autoFocus={true}
                       onBlur={() => exitEditMode(task.id, task.value)}
