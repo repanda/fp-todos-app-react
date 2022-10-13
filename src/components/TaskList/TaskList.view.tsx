@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import * as O from "fp-ts/Option";
 import checkmarkIcon from "../../assets/icon-checkmark.svg";
 import basketIcon from "../../assets/icon-basket.svg";
 import EmptyList from "../EmptyList/EmptyList.view";
 import { fetchData, saveToDB } from "../../helpers";
 import type { Task } from "../Tasks/Tasks.view";
 import "./TaskList.style.scss";
+import { pipe } from "fp-ts/lib/function";
 
 type Props = {
   tasks: Task[];
@@ -13,7 +15,7 @@ type Props = {
   toggleTask: (taskID: number) => void;
 };
 const TaskList = ({ tasks, updateTask, removeTask, toggleTask }: Props) => {
-  const [editModeID, setEditModeID] = useState<null | number>(null);
+  const [editModeID, setEditModeID] = useState<O.Option<number>>(O.none);
 
   const [hideCompletedTasksFlag, setHideCompletedTasksFlag] = useState<boolean>(
     fetchData("hideCompletedTasksFlag") || false
@@ -33,7 +35,7 @@ const TaskList = ({ tasks, updateTask, removeTask, toggleTask }: Props) => {
   };
 
   const onKeyDown = (taskValue: string, taskID: number) => {
-    setEditModeID(null);
+    setEditModeID(O.none);
 
     if (!taskValue.trim()) {
       onRemoveTask(taskID, hideCompletedTasksFlag);
@@ -54,7 +56,7 @@ const TaskList = ({ tasks, updateTask, removeTask, toggleTask }: Props) => {
     }`;
 
   const exitEditMode = (taskID: number, taskValue: string) => {
-    setEditModeID(null);
+    setEditModeID(O.none);
 
     if (!taskValue.trim()) {
       onRemoveTask(taskID, false);
@@ -91,37 +93,47 @@ const TaskList = ({ tasks, updateTask, removeTask, toggleTask }: Props) => {
                   />
                 </div>
                 <div className="TaskList__valueContent">
-                  {editModeID != null ? (
-                    <input
-                      className="TaskList__valueInput"
-                      type="text"
-                      value={task.value}
-                      onChange={(event) =>
-                        updateTask(event.target.value, task.id)
-                      }
-                      autoFocus={true}
-                      onBlur={() => exitEditMode(task.id, task.value)}
-                      onKeyDown={(event) =>
-                        event.key === "Enter" &&
-                        onKeyDown(event.currentTarget.value, task.id)
-                      }
-                    />
-                  ) : (
-                    <p
-                      className="TaskList__value"
-                      onClick={() => setEditModeID(task.id)}
-                    >
-                      {task.value}
-                    </p>
-                  )}
-                  {editModeID == null && (
-                    <img
-                      src={basketIcon}
-                      className="TaskList__deleteIcon"
-                      alt="basket-icon"
-                      onClick={() => onRemoveTask(task.id, true)}
-                    />
-                  )}
+                  {
+                    pipe(
+                      editModeID,
+                      O.filter(n => n === task.id),
+                      O.fold(
+                        () => (
+                          <>
+                            <p
+                              className="TaskList__value"
+                              onClick={() => setEditModeID(O.some(task.id))}
+                            >
+                              {task.value}
+                            </p>
+
+                            <img
+                              src={basketIcon}
+                              className="TaskList__deleteIcon"
+                              alt="basket-icon"
+                              onClick={() => onRemoveTask(task.id, true)}
+                            />
+                          </>
+                        ),
+                        (n) => (
+                          <input
+                            className="TaskList__valueInput"
+                            type="text"
+                            value={task.value}
+                            onChange={(event) =>
+                              updateTask(event.target.value, task.id)
+                            }
+                            autoFocus={true}
+                            onBlur={() => exitEditMode(task.id, task.value)}
+                            onKeyDown={(event) =>
+                              event.key === "Enter" &&
+                              onKeyDown(event.currentTarget.value, task.id)
+                            }
+                          />
+                        )
+                      )
+                    )
+                  }
                 </div>
               </li>
             ))
