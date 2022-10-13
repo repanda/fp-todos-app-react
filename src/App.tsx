@@ -6,9 +6,15 @@ import { fetchData, saveToDB } from "./helpers";
 import "./App.scss";
 import Tasks from "./components/Tasks/Tasks.view";
 
+
+type Config = {
+  darkModeFlag: boolean,
+  hideCompletedTasksFlag: boolean
+}
+
 function App() {
 
-  const [config, setConfig] = useState(fetchData<any>("config") || {
+  const [config, setConfig] = useState<Config>(fetchData("config") || {
     darkModeFlag: false,
     hideCompletedTasksFlag: false
   }
@@ -28,9 +34,9 @@ function App() {
     <main className={getAppClasses}>
       <Header darkModeFlag={config.darkModeFlag} toogleDarkMode={toogleDarkMode} />
       <div className="App__wrapper">
-        <Tasks 
-        toogleCompletedTasks={toogleCompletedTasks}
-         hideCompletedTasksFlag={config.hideCompletedTasksFlag}/>
+        <Tasks
+          toogleCompletedTasks={toogleCompletedTasks}
+          hideCompletedTasksFlag={config.hideCompletedTasksFlag} />
         <Footer />
       </div>
     </main>
