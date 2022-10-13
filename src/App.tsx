@@ -28,7 +28,9 @@ function App() {
     <main className={getAppClasses}>
       <Header darkModeFlag={config.darkModeFlag} toogleDarkMode={toogleDarkMode} />
       <div className="App__wrapper">
-        <Tasks toogleCompletedTasks={toogleCompletedTasks}/>
+        <Tasks 
+        toogleCompletedTasks={toogleCompletedTasks}
+         hideCompletedTasksFlag={config.hideCompletedTasksFlag}/>
         <Footer />
       </div>
     </main>

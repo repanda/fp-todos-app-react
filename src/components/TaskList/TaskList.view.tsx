@@ -3,7 +3,6 @@ import * as O from "fp-ts/Option";
 import checkmarkIcon from "../../assets/icon-checkmark.svg";
 import basketIcon from "../../assets/icon-basket.svg";
 import EmptyList from "../EmptyList/EmptyList.view";
-import { fetchData, saveToDB } from "../../helpers";
 import type { Task } from "../Tasks/Tasks.view";
 import "./TaskList.style.scss";
 import { pipe } from "fp-ts/lib/function";
@@ -14,13 +13,10 @@ type Props = {
   removeTask: (taskID: number) => void;
   toggleTask: (taskID: number) => void;
   toogleCompletedTasks: () => void;
+  hideCompletedTasksFlag: boolean;
 };
-const TaskList = ({ tasks, updateTask, removeTask, toggleTask, toogleCompletedTasks }: Props) => {
+const TaskList = ({ tasks, updateTask, removeTask, toggleTask, toogleCompletedTasks, hideCompletedTasksFlag }: Props) => {
   const [editModeID, setEditModeID] = useState<O.Option<number>>(O.none);
-
-  const [hideCompletedTasksFlag, setHideCompletedTasksFlag] = useState<boolean>(
-    fetchData("hideCompletedTasksFlag") || false
-  );
 
   const onRemoveTask = (taskID: number, shouldConfirm: boolean = true) => {
     if (shouldConfirm) {

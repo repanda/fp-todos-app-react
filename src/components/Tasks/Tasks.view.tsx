@@ -11,9 +11,10 @@ export type Task = {
 
 type Props = {
   toogleCompletedTasks: () => void;
+  hideCompletedTasksFlag: boolean;
 }
 
-const Tasks = ({ toogleCompletedTasks }: Props) => {
+const Tasks = ({ toogleCompletedTasks, hideCompletedTasksFlag }: Props) => {
   const [tasks, setTasks] = useState<Task[]>(fetchData("tasks") || []);
   React.useEffect(() => {
     saveToDB("tasks", tasks);
@@ -56,6 +57,7 @@ const Tasks = ({ toogleCompletedTasks }: Props) => {
         removeTask={removeTask}
         toggleTask={toggleTask}
         toogleCompletedTasks={toogleCompletedTasks}
+        hideCompletedTasksFlag={hideCompletedTasksFlag}
       />
     </Fragment>
   );
