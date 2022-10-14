@@ -1,15 +1,16 @@
-export const fetchData = <T>(key: string): T => {
-  const data = localStorage.getItem(key);
-
-  return data ? JSON.parse(data) : false;
-};
-
-export const saveToDB = (key: string, data: {}) => {
+export const saveToDB = (key: string, data: unknown) => {
   localStorage.setItem(key, JSON.stringify(data));
 };
 
 export const fetchTesks = () => {
   const data = localStorage.getItem("tasks");
-
   return data ? JSON.parse(data) : [];
+}
+
+export const fetchConfig = () => {
+  const data = localStorage.getItem("config");
+  return data ? JSON.parse(data) : {
+    darkModeFlag: false,
+    hideCompletedTasksFlag: false
+  };
 }
