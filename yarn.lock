@@ -4728,7 +4728,7 @@
   "resolved" "https://registry.npmjs.org/forwarded/-/forwarded-0.2.0.tgz"
   "version" "0.2.0"
 
-"fp-ts@^2.12.3":
+"fp-ts@^2.12.3", "fp-ts@^2.5.0":
   "integrity" "sha512-8m0XvW8kZbfnJOA4NvSVXu95mLbPf4LQGwQyqVukIYS4KzSNJiyKSmuZUmbVHteUi6MGkAJGPb0goPZqI+Tsqg=="
   "resolved" "https://registry.npmjs.org/fp-ts/-/fp-ts-2.12.3.tgz"
   "version" "2.12.3"
@@ -5374,6 +5374,11 @@
     "get-intrinsic" "^1.1.0"
     "has" "^1.0.3"
     "side-channel" "^1.0.4"
+
+"io-ts@^2.2.19":
+  "integrity" "sha512-ED0GQwvKRr5C2jqOOJCkuJW2clnbzqFexQ8V7Qsb+VB36S1Mk/OKH7k0FjSe4mjKy9qBRA3OqgVGyFMUEKIubw=="
+  "resolved" "https://registry.npmjs.org/io-ts/-/io-ts-2.2.19.tgz"
+  "version" "2.2.19"
 
 "ip@^2.0.0":
   "integrity" "sha512-WKa+XuLG1A1R0UWhl2+1XQSi+fZWMsYKffMZTTYsiZaUD8k2yDAj5atimTUD2TZkyCkNEeYE5NhFZmupOGtjYQ=="

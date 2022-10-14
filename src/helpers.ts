@@ -7,3 +7,9 @@ export const fetchData = <T>(key: string): T => {
 export const saveToDB = (key: string, data: {}) => {
   localStorage.setItem(key, JSON.stringify(data));
 };
+
+export const fetchTesks = () => {
+  const data = localStorage.getItem("tasks");
+
+  return data ? JSON.parse(data) : [];
+}

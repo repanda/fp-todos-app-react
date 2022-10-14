@@ -1,14 +1,19 @@
 import React, { Fragment, useState } from "react";
 import TaskSearchBar from "../TaskSearchBar/TaskSearchBar.view";
 import TaskList from "../TaskList/TaskList.view";
-import { fetchData, saveToDB } from "../../helpers";
+import { fetchTesks, saveToDB } from "../../helpers";
 import { pipe } from "fp-ts/lib/function";
+import * as I from "io-ts";
+import * as E from "fp-ts/Either";
 
-export type Task = {
-  id: number;
-  value: string;
-  done: boolean;
-};
+
+const Task = I.type({
+  id: I.number,
+  value: I.string,
+  done: I.boolean,
+})
+
+export type Task = I.TypeOf<typeof Task>
 
 type Props = {
   toogleCompletedTasks: () => void;
@@ -18,16 +23,26 @@ type Props = {
 const Tasks = ({ toogleCompletedTasks, hideCompletedTasksFlag }: Props) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   React.useEffect(() => {
     loading || saveToDB("tasks", tasks);
   }, [loading, tasks]);
 
   React.useEffect(() => {
     pipe(
-      fetchData<Task[]>("tasks"),
-      setTasks,
-      () => setLoading(false)
+      fetchTesks(),
+      I.array(Task).decode,
+      E.fold(
+        errors => {
+          console.log(errors);
+          setTasks([]);
+        },
+        tasks => {
+          setTasks(tasks);
+          setLoading(false);
+        }
+      )
+
     )
   }, []);
 

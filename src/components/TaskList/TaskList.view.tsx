@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import * as O from "fp-ts/Option";
 import checkmarkIcon from "../../assets/icon-checkmark.svg";
 import basketIcon from "../../assets/icon-basket.svg";
