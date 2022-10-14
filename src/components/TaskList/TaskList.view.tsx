@@ -12,10 +12,10 @@ type Props = {
   updateTask: (value: string, taskID: number) => void;
   removeTask: (taskID: number) => void;
   toggleTask: (taskID: number) => void;
-  toogleCompletedTasks: () => void;
+  toggleCompletedTasks: () => void;
   hideCompletedTasksFlag: boolean;
 };
-const TaskList = ({ tasks, updateTask, removeTask, toggleTask, toogleCompletedTasks, hideCompletedTasksFlag }: Props) => {
+const TaskList = ({ tasks, updateTask, removeTask, toggleTask, toggleCompletedTasks, hideCompletedTasksFlag }: Props) => {
   const [editModeID, setEditModeID] = useState<O.Option<number>>(O.none);
 
   const onRemoveTask = (taskID: number, shouldConfirm: boolean = true) => {
@@ -56,7 +56,7 @@ const TaskList = ({ tasks, updateTask, removeTask, toggleTask, toogleCompletedTa
   return (
     <div className="TaskList">
       {!!tasks.length && (
-        <p className={generateLinkClasses} onClick={toogleCompletedTasks}>
+        <p className={generateLinkClasses} onClick={toggleCompletedTasks}>
           {hideCompletedTasksFlag ? (
             <span>إظهار المهام المكتملة</span>
           ) : (

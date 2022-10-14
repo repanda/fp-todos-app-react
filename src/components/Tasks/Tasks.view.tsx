@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import TaskSearchBar from "../TaskSearchBar/TaskSearchBar.view";
 import TaskList from "../TaskList/TaskList.view";
-import { fetchTesks, saveToDB } from "../../helpers";
+import { fetchTasks, saveToDB } from "../../helpers";
 import { pipe } from "fp-ts/lib/function";
 import * as I from "io-ts";
 import * as E from "fp-ts/Either";
@@ -16,11 +16,11 @@ const Task = I.type({
 export type Task = I.TypeOf<typeof Task>
 
 type Props = {
-  toogleCompletedTasks: () => void;
+  toggleCompletedTasks: () => void;
   hideCompletedTasksFlag: boolean;
 }
 
-const Tasks = ({ toogleCompletedTasks, hideCompletedTasksFlag }: Props) => {
+const Tasks = ({ toggleCompletedTasks, hideCompletedTasksFlag }: Props) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,7 +30,7 @@ const Tasks = ({ toogleCompletedTasks, hideCompletedTasksFlag }: Props) => {
 
   React.useEffect(() => {
     pipe(
-      fetchTesks(),
+      fetchTasks(),
       I.array(Task).decode,
       E.fold(
         errors => {
@@ -82,7 +82,7 @@ const Tasks = ({ toogleCompletedTasks, hideCompletedTasksFlag }: Props) => {
         updateTask={updateTask}
         removeTask={removeTask}
         toggleTask={toggleTask}
-        toogleCompletedTasks={toogleCompletedTasks}
+        toggleCompletedTasks={toggleCompletedTasks}
         hideCompletedTasksFlag={hideCompletedTasksFlag}
       />
     </Fragment>

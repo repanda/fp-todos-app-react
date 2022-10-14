@@ -1,4 +1,3 @@
-import React from "react";
 import DarkThemeToggle from "../DarkThemeToggle/DarkThemeToggle.view";
 import SocialLinks from "../SocialLinks/SocialLinks.view";
 
@@ -6,14 +5,14 @@ import "./Header.style.scss";
 
 type Props = {
   darkModeFlag: boolean;
-  toogleDarkMode: () => void;
+  toggleDarkMode: () => void;
 };
-const Header = ({ darkModeFlag, toogleDarkMode }: Props) => {
+const Header = ({ darkModeFlag, toggleDarkMode }: Props) => {
   return (
     <header className="Header">
       <DarkThemeToggle
         darkModeFlag={darkModeFlag}
-        toogleDarkMode={toogleDarkMode}
+        toggleDarkMode={toggleDarkMode}
       />
       <SocialLinks />
     </header>
